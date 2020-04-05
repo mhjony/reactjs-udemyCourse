@@ -12,10 +12,10 @@ class App extends Component {
     otherState: 'some other value'
   });
 
-  clickNameHendler = () => {
+  clickNameHendler = (newName) => {
     this.setState({
       persons: [
-        { name: 'Mahmudul Hasan', age: '28' },
+        { name: newName, age: '28' },
         { name: 'Mehedi Hasan', age: '21' },
         { name: 'Stephanie', age: '29' }
       ]
@@ -26,14 +26,14 @@ class App extends Component {
     return (
       <div className="App" >
         <h1>Hi, I am a react app</h1>
-        <button onClick={this.clickNameHendler}>Switch</button>
+        <button onClick={() => this.clickNameHendler('Maximalian!!!!')}>Switch</button>
         <Person name={this.state.persons[0].name}
           age={this.state.persons[0].age} />
         <Person name={this.state.persons[1].name}
           age={this.state.persons[1].age}>My brother</Person>
         <Person name={this.state.persons[2].name}
           age={this.state.persons[2].age}
-          click={this.clickNameHendler} />
+          click={this.clickNameHendler.bind(this, 'Max')} />
         <Person name={this.state.otherState} />
       </div>
     );
