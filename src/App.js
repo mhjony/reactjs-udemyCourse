@@ -18,8 +18,11 @@ class App extends Component {
   render() {
     return (
       <div className="App" >
-        <UserInput change={this.nameHandler} />
+        <UserInput change={this.nameHandler}
+          currentName={this.state.username} />
         <UserOutput userName={this.state.username} />
+        <UserOutput userName={this.state.username} />
+        <UserOutput userName="Max" />
       </div>
     );
     //return React.createElement('div', { className: 'App' }, React.createElement('h1', null, 'Hi, I\'am a react app'));
