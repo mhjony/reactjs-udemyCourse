@@ -3,13 +3,13 @@ import React from 'react'
 const char = (props) => {
     const style = {
         display: 'inline-block',
-        padding: '16px',
+        padding: '5px',
         textAlign: 'center',
         margin: '5px',
         border: '1px solid black'
     }
     return (
-        <div style={style}>
+        <div style={style} onClick={props.clicked}>
             {props.character}
         </div>
     )
