@@ -8,39 +8,37 @@ import Char from './Char/Char'
 
 class App extends Component {
   state = {
-    UserInput: ''
-  };
+    inputText: ''
+  }
 
-  inputChangeHandler = (event) => {
+  inputHandler = (event) => {
     this.setState({
-      UserInput: event.target.value
+      inputText: event.target.value
     })
   }
 
   deleteHandler = (index) => {
-    const text = this.state.UserInput.split('');
+    const text = this.state.inputText.split('');
     text.splice(index, 1);
-    const updateText = text.join('');
-    this.setState({ UserInput: updateText });
-
+    const updText = text.join('');
+    this.setState({ inputText: updText })
   }
 
-
   render() {
-    const charList = this.state.UserInput.split('').map((ch, index) => {
+    const charList = this.state.inputText.split('').map((ch) => {
       return (<Char character={ch}
-        key={index}
-        clicked={() => this.deleteHandler(index)} />)
+        key={ch.id}
+        clicked={() => this.deleteHandler(ch.id)} />)
     })
+
     return (
       <div className="App" >
         <h1>Hi, I'm a React App</h1>
         <p>This is really working!</p>
         <input type="text"
-          onChange={this.inputChangeHandler}
-          value={this.state.UserInput} />
-        <p>{this.state.UserInput}</p>
-        <Validation inputLength={this.state.UserInput.length} />
+          onChange={this.inputHandler} />
+        <p>{this.state.inputText}</p>
+        <Validation inputLength={this.state.inputText} />
         {charList}
       </div>
     );
