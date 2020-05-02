@@ -1,45 +1,118 @@
 import React, { Component } from 'react';
+import Radium, { StyleRoot } from 'radium'
 import './App.css';
 import Person from './Person/Person';
 import UserInput from './User/UserInput';
 import UserOutput from './User/UserOutput';
 import Validation from './Validation/Validation';
-import Char from './Char/Char'
+import Char from './Char/Char';
+import { pink } from 'color-name';
+import { tsImportEqualsDeclaration } from '@babel/types';
+import styled from 'styled-components';
+
+const StyledButton = styled.button`
+      background-color: ${props => props.alt ? 'red' : 'green'};
+      color: white;
+      font: inherit;
+      border: 1px solid black;
+      cursor: pointer;
+      &:hover {
+        background-color: ${props => props.alt ? 'salmon' : 'lightgreen'};
+        color: black;
+      }
+    `;
 
 class App extends Component {
   state = {
-    inputText: ''
+    person: [
+      { id: '1', name: 'Mahmudul', age: 24 },
+      { id: '22', name: 'Mehedi', age: 18 },
+      { id: '3', name: 'Minhaz', age: 24 }
+    ],
+    otherValue: 'Some other value',
+    showPersons: false
   }
 
-  inputHandler = (event) => {
+  nameChangeHandler = (event, id) => {
+    const personIndex = this.state.person.findIndex(ch => {
+      return ch.id === id;
+    })
+
+    const person = {
+      ...this.state.person[personIndex]
+    };
+
+    person.name = event.target.value;
+    const persona = [...this.state.person];
+
+    persona[personIndex] = person;
+    this.setState({ person: persona })
+
+    const doesShow = this.state.showPersons;
     this.setState({
-      inputText: event.target.value
+      person: [
+        { id: '1', name: 'Mahmudul Hasan', age: 28 },
+        { id: '2', name: event.target.value, age: 30 },
+        { id: '3', name: 'Minhaz Hoque', age: 28 }
+      ],
+      otherValue: 'Some other update value',
+      showPersons: true
     })
   }
 
   deleteHandler = (index) => {
-    const text = this.state.inputText.split('');
-    text.splice(index, 1);
-    const updText = text.join('');
-    this.setState({ inputText: updText })
+    const person = [...this.state.person];
+    person.splice(index, 1);
+    this.setState({ person: person });
+  }
+
+  toggoleHandler = () => {
+    const doesShow = this.state.showPersons;
+    this.setState({ showPersons: !doesShow })
   }
 
   render() {
-    const charList = this.state.inputText.split('').map((ch) => {
-      return (<Char character={ch}
-        key={ch.id}
-        clicked={() => this.deleteHandler(ch.id)} />)
-    })
+    const style = {
 
+    }
+
+    let persons = null;
+
+    if (this.state.showPersons) {
+      persons = (
+        <div>
+          {this.state.person.map((per, index) => {
+            return (
+              <Person name={per.name}
+                age={per.age}
+                key={per.id}
+                changed={(event) => this.nameChangeHandler(event, per.id)}
+                clicked={() => this.deleteHandler(index)} />
+            )
+          })}
+        </div>
+      )
+      style.backgroundColor = 'red';
+      style[':hover'] = {
+        backgroundColor: 'salmon',
+        color: 'black'
+      }
+    }
+
+    let classes = [];
+    if (this.state.person.length <= 2) {
+      classes.push('red');
+    }
+    if (this.state.person.length <= 1) {
+      classes.push('bold');
+    }
     return (
-      <div className="App" >
+      <div className="App">
         <h1>Hi, I'm a React App</h1>
-        <p>This is really working!</p>
-        <input type="text"
-          onChange={this.inputHandler} />
-        <p>{this.state.inputText}</p>
-        <Validation inputLength={this.state.inputText} />
-        {charList}
+        <p className={classes.join(' ')}>This is really working!</p>
+        <StyledButton alt={this.state.showPersons}
+          onClick={this.toggoleHandler}>Toggle person</StyledButton>
+        {persons}
       </div>
     );
     //return React.createElement('div', { className: 'App' }, React.createElement('h1', null, 'Hi, I\'am a react app'));
