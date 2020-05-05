@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Radium, { StyleRoot } from 'radium'
-import './App.css';
+import styles from './App.css';
 import Person from './Person/Person';
 import UserInput from './User/UserInput';
 import UserOutput from './User/UserOutput';
@@ -9,6 +8,9 @@ import Char from './Char/Char';
 import { pink } from 'color-name';
 import { tsImportEqualsDeclaration } from '@babel/types';
 import styled from 'styled-components';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary'
+
+console.log(styles);
 
 class App extends Component {
   state = {
@@ -23,7 +25,7 @@ class App extends Component {
 
   nameChangeHandler = (event, id) => {
     const personIndex = this.state.person.findIndex(ch => {
-      return ch.id === id;
+      return ch.userid === id;
     })
 
     const person = {
@@ -60,45 +62,41 @@ class App extends Component {
   }
 
   render() {
-    const style = {
-
-    }
-
     let persons = null;
+    let btnClass = [styles.Button];
+    console.log(btnClass);
 
     if (this.state.showPersons) {
       persons = (
         <div>
           {this.state.person.map((per, index) => {
             return (
-              <Person name={per.name}
-                age={per.age}
-                key={per.id}
-                changed={(event) => this.nameChangeHandler(event, per.id)}
-                clicked={() => this.deleteHandler(index)} />
+              <ErrorBoundary key={per.id}>
+                <Person name={per.name}
+                  age={per.age}
+                  changed={(event) => this.nameChangeHandler(event, per.id)}
+                  clicked={() => this.deleteHandler(index)} />
+              </ErrorBoundary>
             )
           })}
         </div>
       )
-      style.backgroundColor = 'red';
-      style[':hover'] = {
-        backgroundColor: 'salmon',
-        color: 'black'
-      }
+      btnClass.push(styles.Red);
+      //console.log(btnClass);
     }
 
-    let classes = [];
+    let classesArray = [];
     if (this.state.person.length <= 2) {
-      classes.push('red');
+      classesArray.push(styles.red);
     }
     if (this.state.person.length <= 1) {
-      classes.push('bold');
+      classesArray.push(styles.bold);
     }
     return (
-      <div className="App">
+      <div className={styles.App}>
         <h1>Hi, I'm a React App</h1>
-        <p className={classes.join(' ')}>This is really working!</p>
-        <button className="button"
+        <p className={classesArray.join(' ')}>This is really working!</p>
+        <button className={btnClass.join(' ')}
           onClick={this.toggoleHandler}>Toggle person</button>
         {persons}
       </div>
