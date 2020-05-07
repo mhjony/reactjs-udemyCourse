@@ -7,3 +7,9 @@
     text-align: center;
     background-color: #ff9966;
 }
+
+.text {
+    height: 20px;
+    border: 1px solid black;
+    border-radius: 3px;
+}

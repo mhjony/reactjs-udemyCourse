@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import styles from './App.css';
-import Person from './Person/Person';
-import UserInput from './User/UserInput';
-import UserOutput from './User/UserOutput';
-import Validation from './Validation/Validation';
-import Char from './Char/Char';
+import Persons from '../components/Persons/Persons';
+import UserInput from '../components/User/UserInput';
+import UserOutput from '../components/User/UserOutput';
+import Validation from '../components/Validation/Validation';
+import Char from '../components/Char/Char';
 import { pink } from 'color-name';
 import { tsImportEqualsDeclaration } from '@babel/types';
 import styled from 'styled-components';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary'
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import Cockpit from '../components/Cockpit/Cockpit';
+
 
 console.log(styles);
 
@@ -63,41 +65,26 @@ class App extends Component {
 
   render() {
     let persons = null;
-    let btnClass = [styles.Button];
-    console.log(btnClass);
+
 
     if (this.state.showPersons) {
       persons = (
-        <div>
-          {this.state.person.map((per, index) => {
-            return (
-              <ErrorBoundary key={per.id}>
-                <Person name={per.name}
-                  age={per.age}
-                  changed={(event) => this.nameChangeHandler(event, per.id)}
-                  clicked={() => this.deleteHandler(index)} />
-              </ErrorBoundary>
-            )
-          })}
-        </div>
+        <Persons
+          person={this.state.person}
+          changed={this.nameChangeHandler}
+          clicked={this.deleteHandler} />
       )
-      btnClass.push(styles.Red);
+      //btnClass.push(styles.Red);
       //console.log(btnClass);
     }
 
-    let classesArray = [];
-    if (this.state.person.length <= 2) {
-      classesArray.push(styles.red);
-    }
-    if (this.state.person.length <= 1) {
-      classesArray.push(styles.bold);
-    }
+
     return (
       <div className={styles.App}>
-        <h1>Hi, I'm a React App</h1>
-        <p className={classesArray.join(' ')}>This is really working!</p>
-        <button className={btnClass.join(' ')}
-          onClick={this.toggoleHandler}>Toggle person</button>
+        <Cockpit showPersons={this.state.showPersons}
+          person={this.state.person}
+          clicked={this.toggoleHandler}
+        />
         {persons}
       </div>
     );
