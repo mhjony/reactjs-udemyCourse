@@ -1,7 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './Cockpit.css';
 
 const Cockpit = (props) => {
+    useEffect(() => {
+        console.log('[Cockpit.js] useEffect');
+        setTimeout(() => {
+            alert("This is a message");
+        }, 1000);
+        return () => {
+            console.log('[Cockpit.js] clean up work in useEffect');
+        }
+    }, []);
+
     let classesArray = [];
     let btnClass = '';
     if (props.showPersons) {
