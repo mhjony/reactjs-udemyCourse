@@ -107,8 +107,7 @@ class App extends Component {
       <div className={styles.App}>
         <Cockpit showPersons={this.state.showPersons}
           person={this.state.person}
-          clicked={this.toggoleHandler}
-        />
+          clicked={this.toggoleHandler} />
         {persons}
       </div>
     );
